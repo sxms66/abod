@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كتاب التعريفات</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --dark: #0d0b08;
+    --dark2: #1a1610;
+    --dark3: #252018;
+    --cream: #f5ead8;
+    --cream2: #ede0c4;
+    --border: #c9a84c44;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--dark);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; animation: fadeIn 0.6s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #home {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #home::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, #c9a84c18 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .home-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .site-title {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .site-title .ornament {
+    color: var(--gold);
+    font-size: 28px;
+    letter-spacing: 8px;
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .site-title h1 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: var(--cream);
+    line-height: 1.2;
+    text-shadow: 0 0 60px #c9a84c44;
+  }
+
+  .site-title p {
+    margin-top: 16px;
+    color: var(--gold-light);
+    font-weight: 300;
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0;
+    opacity: 0.4;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+  .divider::after { background: linear-gradient(to right, transparent, var(--gold)); }
+  .divider span { color: var(--gold); font-size: 20px; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .def-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .def-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .def-card:hover::before { transform: scaleX(1); }
+
+  .def-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 0 20px 60px #c9a84c22, 0 0 0 1px #c9a84c33;
+    background: var(--dark3);
+  }
+
+  .def-card .card-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+  .def-card .card-title { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--gold-light); margin-bottom: 8px; }
+  .def-card .card-subtitle { font-size: 0.85rem; color: var(--cream); opacity: 0.4; font-weight: 300; }
+
+  /* DETAIL */
+  #detail { background: var(--dark); }
+
+  .detail-header {
+    background: var(--dark2);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .back-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .back-btn:hover { background: var(--gold); color: var(--dark); }
+
+  .detail-title { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--gold-light); }
+
+  .detail-body { max-width: 800px; margin: 0 auto; padding: 48px 24px; }
+
+  /* Images */
+  .images-section { margin-bottom: 36px; }
+
+  .main-img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  .extra-imgs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .extra-imgs img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .extra-imgs img:hover { border-color: var(--gold); transform: scale(1.05); }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000000cc;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: pointer;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; object-fit: contain; }
+
+  /* Description */
+  .desc-section h2 {
+    font-family: 'Amiri', serif;
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .desc-text {
+    line-height: 2.2;
+    font-size: 1.08rem;
+    color: var(--cream2);
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+  ✏️ دليل التعديل للمبرمج (أنت فقط):
+
+  كل بطاقة موجودة في مصفوفة CARDS أدناه.
+  كل بطاقة تحتوي:
+    - title:      اسم البطاقة
+    - icon:       إيموجي
+    - desc:       الشرح (استخدم \n للسطر الجديد)
+    - mainImg:    رابط الصورة الرئيسية (أو '' إذا ما في)
+    - imgs:       مصفوفة روابط صور إضافية (أو [] إذا ما في)
+
+  لإضافة بطاقة: انسخ أحد الكائنات وعدّله
+  لحذف بطاقة: احذف الكائن من المصفوفة
+  للصور: ضع اسم الملف إذا في نفس المجلد، أو رابط URL كامل
+========================================== -->
+
+<script>
+const CARDS = [
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // البطاقة الأولى
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    title:   "خالي",
+    icon:    "❤️",
+    desc:    "اكتب هنا شرح خالي...\nيمكنك كتابة أكثر من سطر.",
+    mainImg: "",        // مثال: "images/khali.jpg"
+    imgs:    []         // مثال: ["images/1.jpg", "images/2.jpg"]
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // البطاقة الثانية
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    title:   "خالي الغالي",
+    icon:    "👑",
+    desc:    "اكتب هنا شرح خالي الغالي...",
+    mainImg: "",
+    imgs:    []
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // البطاقة الثالثة
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    title:   "الأسود",
+    icon:    "⭐",
+    desc:    "اكتب هنا شرح الأسود...",
+    mainImg: "",
+    imgs:    []
+  },
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // أضف بطاقات جديدة هنا ↓
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+];
+</script>
+
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="home-inner">
+    <div class="site-title">
+      <span class="ornament">✦ ✦ ✦</span>
+      <!-- ✏️ غيّر العنوان هنا -->
+      <h1>كتاب الصفات والتعريفات</h1>
+      <p>اضغط على أي كارت لمعرفة التعريف</p>
+    </div>
+    <div class="divider"><span>◆</span></div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div id="detail" class="page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goHome()">← رجوع</button>
+    <div class="detail-title" id="detailTitle"></div>
+  </div>
+  <div class="detail-body">
+    <div class="images-section" id="imagesSection"></div>
+    <div class="desc-section">
+      <h2 id="detailDescTitle"></h2>
+      <div class="desc-text" id="detailDesc"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightboxImg" src="">
+</div>
+
+<script>
+// ---- RENDER CARDS ----
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  CARDS.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = 'def-card';
+    el.innerHTML = `
+      <span class="card-icon">${card.icon}</span>
+      <div class="card-title">${card.title}</div>
+      <div class="card-subtitle">اضغط للتعريف</div>
+    `;
+    el.onclick = () => openDetail(i);
+    grid.appendChild(el);
+  });
+}
+
+// ---- DETAIL ----
+function openDetail(i) {
+  const card = CARDS[i];
+  document.getElementById('detailTitle').textContent = card.icon + ' ' + card.title;
+  document.getElementById('detailDescTitle').textContent = 'شرح: ' + card.title;
+  document.getElementById('detailDesc').textContent = card.desc;
+
+  const sec = document.getElementById('imagesSection');
+  sec.innerHTML = '';
+
+  if (card.mainImg) {
+    const img = document.createElement('img');
+    img.src = card.mainImg;
+    img.className = 'main-img';
+    img.onclick = () => openLightbox(card.mainImg);
+    sec.appendChild(img);
+  }
+
+  if (card.imgs && card.imgs.length) {
+    const wrap = document.createElement('div');
+    wrap.className = 'extra-imgs';
+    card.imgs.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.onclick = () => openLightbox(src);
+      wrap.appendChild(img);
+    });
+    sec.appendChild(wrap);
+  }
+
+  showPage('detail');
+}
+
+// ---- LIGHTBOX ----
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ---- NAV ----
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+function goHome() { showPage('home'); }
+
+renderCards();
+</script>
+</body>
+</html>
